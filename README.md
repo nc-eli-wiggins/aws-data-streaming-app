@@ -11,7 +11,23 @@
 
 ## Setup Instructions
 
-1. Add your Guardian API key to your AWS Secrets Manager
-```bash
-aws secretsmanager create-secret --name Guardian-API-Key --description "Access key for Guardian API." --secret-string "[ADD YOUR API KEY HERE]"
-```
+1. **Clone the repo:**  
+   ```bash  
+   git clone https://github.com/FloatingBrioche/aws-data-streaming-app.git
+   cd aws-data-streaming-app 
+   ``` 
+
+2. **Add your Guardian API key to your AWS Secrets Manager**
+    ```bash
+    aws secretsmanager create-secret --name Guardian-API-Key --description "Access key for Guardian API." --secret-string "[ADD YOUR API KEY HERE]"
+    ```
+
+3. **Create your Terraform State Bucket**
+    ```bash
+    aws s3api create-bucket \
+    --bucket [ADD YOUR BUCKET NAME] \
+    --region [ADD YOUR REGION] \
+    --create-bucket-configuration LocationConstraint=[YOUR REGION]
+    ```
+
+4. **Update the Terraform vars in the [terraform-perm directory](./terraform-perm/vars.tf)**
