@@ -45,3 +45,9 @@ def test_adds_single_message(sqs_client):
     assert list(output.keys())[0] == 'Successful'
     response = sqs_client.receive_message(QueueUrl=queue_url, MaxNumberOfMessages=10)
     assert len(response['Messages']) == 1
+
+def test_adds_10_messages(sqs_client):
+    output = post_to_sqs(prepared_messages)
+    assert list(output.keys())[0] == 'Successful'
+    response = sqs_client.receive_message(QueueUrl=queue_url, MaxNumberOfMessages=10)
+    assert len(response['Messages']) == 10
