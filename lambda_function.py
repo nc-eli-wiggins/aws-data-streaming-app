@@ -1,4 +1,5 @@
 from requests import get as get_request
+from json import dumps
 
 import boto3
 from botocore.exceptions import ClientError
@@ -40,8 +41,20 @@ def request_content(api_key: str, search_term: str, from_date: str = None)  -> d
         return None
 
 
-def prepare_messages():
-    pass
+def prepare_messages(raw_response):
+    articles = raw_response['response']['results']
+    prepared_messages = [
+        {
+            "Id": x["id"],
+            "MessageBody": dumps({
+                "webPublicationDate": x["webPublicationDate"],
+                "webTitle": x["webTitle"],
+                "webUrl": x["webUrl"]
+            })
+        } for x in articles
+    ]
+
+    return prepared_messages
 
 
 def post_to_sqs(messages: list):
