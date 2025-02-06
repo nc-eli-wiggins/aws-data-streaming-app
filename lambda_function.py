@@ -39,6 +39,21 @@ def request_content(api_key: str, search_term: str, from_date: str = None)  -> d
     else:
         return None
 
-    
-def post_to_sqs():
+
+def prepare_messages():
     pass
+
+
+def post_to_sqs(messages: list):
+    
+    sqs_client = boto3.client("sqs")
+
+    queue_url = sqs_client.get_queue_url(
+            QueueName='guardian_content'
+        )['QueueUrl']
+
+    response = sqs_client.send_message_batch(
+        QueueUrl=queue_url,
+        Entries=messages
+    )
+    return response
