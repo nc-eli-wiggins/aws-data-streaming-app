@@ -1,10 +1,11 @@
-from main import get_api_key
+import os
 
 from moto import mock_aws
 import boto3
 from botocore.exceptions import ClientError
 import pytest
-import os
+
+from lambda_function import get_api_key
 
 
 @pytest.fixture(scope="function")

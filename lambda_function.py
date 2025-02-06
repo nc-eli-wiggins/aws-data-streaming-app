@@ -1,6 +1,8 @@
+from requests import get as get_request
+
 import boto3
 from botocore.exceptions import ClientError
-from requests import get as get_request
+
 
 def lambda_handler(event, context):
     if not event.get("queryStringParameters"):
@@ -36,6 +38,7 @@ def request_content(api_key: str, search_term: str, from_date: str = None)  -> d
         return response.json()
     else:
         return None
+
     
 def post_to_sqs():
     pass
