@@ -1,14 +1,43 @@
 from requests import get as get_request
 from json import dumps
+import logging
 
 import boto3
 from botocore.exceptions import ClientError
 
 
 def lambda_handler(event, context):
-    if not event.get("queryStringParameters"):
-        pass
+    logger = setup_logger("Guardian Data Streaming Lambda")
+    
+    if context == "local":
+        search_term = event['SearchTerm']
+        from_date = event['FromDate']
+    else:
+        search_term = event['SearchTerm']
+        from_date = event['FromDate']
+
+
     api_key = get_api_key()
+
+    raw_response = request_content(api_key, search_term, from_date)
+
+    prepared_messages = prepare_messages(raw_response)
+
+    sqs_response = post_to_sqs(prepared_messages)
+
+
+def setup_logger(logger_name: str):
+    logger = logging.getLogger(logger_name)
+    logger.setLevel(logging.DEBUG)
+    json_handler = logging.StreamHandler()
+    formatter = JSONFormatter(
+        "%(asctime)s %(levelname)s %(name)s %(message)s "
+        + "%(filename)s %(funcName)s"
+    )
+    json_handler.setFormatter(formatter)
+    logger.addHandler(json_handler)
+
+    return logger
 
 
 def get_api_key() -> str:
@@ -27,7 +56,7 @@ def get_api_key() -> str:
 
 
 def request_content(
-    api_key: str, search_term: str, from_date: str = None
+    api_key: str, search_term: str, from_date: str | None = None
 ) -> dict | None:
 
     url = f"https://content.guardianapis.com/search?q={search_term}"
@@ -69,4 +98,18 @@ def post_to_sqs(messages: list):
     queue_url = sqs_client.get_queue_url(QueueName="guardian_content")["QueueUrl"]
 
     response = sqs_client.send_message_batch(QueueUrl=queue_url, Entries=messages)
+    
     return response
+
+
+class JSONFormatter(logging.Formatter):
+    def format(self, record):
+        log_obj = {
+            "asctime": self.formatTime(record, self.datefmt),
+            "levelname": record.levelname,
+            "name": record.name,
+            "message": record.getMessage(),
+            "filename": record.filename,
+            "funcName": record.funcName,
+        }
+        return dumps(log_obj)
