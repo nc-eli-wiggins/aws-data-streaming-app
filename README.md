@@ -31,3 +31,10 @@
     ```
 
 4. **Update the Terraform vars in the [terraform-perm directory](./terraform-perm/vars.tf)**
+
+
+5. **Add your AWS access key and secret access key to the repo secrets**
+
+- Go to Settings > Secrets and variables > Actions.
+- Click New repository secret.
+- Use AWS_ACCESS_KEY and AWS_SECRET__ACCESS_KEY as the secrets names, adding your own values for the secrets themselves.
