@@ -7,6 +7,7 @@ WD=$(shell pwd)
 PYTHONPATH=${WD}
 SHELL:=/bin/bash
 PIP:=pip
+REGION = eu-west-2
 
 ## Create python interpreter environment
 create-environment:
