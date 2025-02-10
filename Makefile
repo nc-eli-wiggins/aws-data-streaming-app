@@ -8,7 +8,7 @@ PYTHONPATH=${WD}
 SHELL:=/bin/bash
 PIP:=pip
 
-## Create python interpreter environment.
+## Create python interpreter environment
 create-environment:
 	@echo ">>> Project: $(PROJECT_NAME)..."
 	@echo ">>> Python version:"
@@ -39,10 +39,6 @@ requirements: create-environment
 bandit:
 	$(call execute_in_env, $(PIP) install bandit)
 
-## Install safety
-# safety:
-# 	$(call execute_in_env, $(PIP) install safety)
-
 ## Install black
 black:
 	$(call execute_in_env, $(PIP) install black)
@@ -52,14 +48,12 @@ coverage:
 	$(call execute_in_env, $(PIP) install coverage)
 
 ## Set up dev requirements (bandit, safety, black)
-dev-setup: bandit black coverage # safety
-	$(call execute_in_env, $(PIP) install -r ./dev-requirements.txt)
+dev-setup: bandit black coverage 
 
 # Build / Run
 
-## Run the security test (bandit + safety)
+## Run bandit security test
 security-test:
-# $(call execute_in_env, safety check  -r ./dev-requirements.txt)
 	$(call execute_in_env, bandit -lll */*.py *c/*/*.py)
 
 ## Run the black code check
