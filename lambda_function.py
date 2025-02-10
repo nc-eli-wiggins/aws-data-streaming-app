@@ -1,21 +1,20 @@
-from requests import get as get_request
 from json import dumps
 import logging
 
+from requests import get as get_request
 import boto3
 from botocore.exceptions import ClientError
 
 
 def lambda_handler(event, context):
     logger = setup_logger("Guardian Data Streaming Lambda")
-    
-    if context == "local":
-        search_term = event['SearchTerm']
-        from_date = event['FromDate']
-    else:
-        search_term = event['SearchTerm']
-        from_date = event['FromDate']
 
+    if context == "local":
+        search_term = event["SearchTerm"]
+        from_date = event["FromDate"]
+    else:
+        search_term = event["SearchTerm"]
+        from_date = event["FromDate"]
 
     api_key = get_api_key()
 
@@ -31,8 +30,7 @@ def setup_logger(logger_name: str):
     logger.setLevel(logging.DEBUG)
     json_handler = logging.StreamHandler()
     formatter = JSONFormatter(
-        "%(asctime)s %(levelname)s %(name)s %(message)s "
-        + "%(filename)s %(funcName)s"
+        "%(asctime)s %(levelname)s %(name)s %(message)s " + "%(filename)s %(funcName)s"
     )
     json_handler.setFormatter(formatter)
     logger.addHandler(json_handler)
@@ -41,16 +39,11 @@ def setup_logger(logger_name: str):
 
 
 def get_api_key() -> str:
-    region_name = "eu-west-2"
     secret_name = "Guardian-API-Key"
 
-    session = boto3.session.Session()
-    client = session.client(service_name="secretsmanager", region_name=region_name)
+    client = boto3.client("secretsmanager")
 
-    try:
-        get_secret_value_response = client.get_secret_value(SecretId=secret_name)
-    except ClientError as e:
-        raise e
+    get_secret_value_response = client.get_secret_value(SecretId=secret_name)
 
     return get_secret_value_response["SecretString"]
 
@@ -98,7 +91,7 @@ def post_to_sqs(messages: list):
     queue_url = sqs_client.get_queue_url(QueueName="guardian_content")["QueueUrl"]
 
     response = sqs_client.send_message_batch(QueueUrl=queue_url, Entries=messages)
-    
+
     return response
 
 
