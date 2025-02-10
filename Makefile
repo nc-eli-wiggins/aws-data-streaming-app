@@ -9,6 +9,8 @@ SHELL:=/bin/bash
 PIP:=pip
 REGION = eu-west-2
 
+### Set up environment ###
+
 ## Create python interpreter environment
 create-environment:
 	@echo ">>> Project: $(PROJECT_NAME)..."
@@ -22,10 +24,10 @@ create-environment:
 	    virtualenv venv --python=$(PYTHON_INTERPRETER); \
 	)
 
-# Define utility variable to help calling Python from the virtual environment
+## Define utility variable to help calling Python from the virtual environment
 ACTIVATE_ENV:=source venv/bin/activate
 
-# Execute python related functionalities from within the project's environment
+## Execute python related functionalities from within the project's environment
 define execute_in_env
 	$(ACTIVATE_ENV) && export PYTHONPATH=${PYTHONPATH} && $1
 endef
@@ -34,8 +36,9 @@ endef
 requirements: create-environment
 	$(call execute_in_env, $(PIP) install -r ./dev-requirements.txt)
 
-################################################################################################################
-# Set Up
+
+### Set up dev tools ###
+
 ## Install bandit
 bandit:
 	$(call execute_in_env, $(PIP) install bandit)
@@ -51,7 +54,8 @@ coverage:
 ## Set up dev requirements (bandit, safety, black)
 dev-setup: bandit black coverage 
 
-# Build / Run
+
+### Run Checks ###
 
 ## Run bandit security test
 security-test:
