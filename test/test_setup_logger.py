@@ -2,7 +2,7 @@ import logging
 
 import pytest
 
-from lambda_function import setup_logger, JSONFormatter
+from lambda_app.lambda_utils import setup_logger, JSONFormatter
 
 
 def test_returns_logger():

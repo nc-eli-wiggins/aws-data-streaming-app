@@ -2,7 +2,7 @@ from json import load, loads
 
 import pytest
 
-from lambda_function import prepare_messages
+from lambda_app.lambda_utils import prepare_messages
 
 
 @pytest.fixture()

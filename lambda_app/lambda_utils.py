@@ -1,28 +1,8 @@
-from json import dumps
 import logging
+from json import dumps
 
-from requests import get as get_request
 import boto3
-from botocore.exceptions import ClientError
-
-
-def lambda_handler(event, context):
-    logger = setup_logger("Guardian Data Streaming Lambda")
-
-    if context == "local":
-        search_term = event["SearchTerm"]
-        from_date = event["FromDate"]
-    else:
-        search_term = event["SearchTerm"]
-        from_date = event["FromDate"]
-
-    api_key = get_api_key()
-
-    raw_response = request_content(api_key, search_term, from_date)
-
-    prepared_messages = prepare_messages(raw_response)
-
-    sqs_response = post_to_sqs(prepared_messages)
+from requests import get as get_request
 
 
 def setup_logger(logger_name: str):

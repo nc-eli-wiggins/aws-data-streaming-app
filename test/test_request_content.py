@@ -2,7 +2,7 @@ from unittest.mock import patch, Mock
 
 import pytest
 
-from lambda_function import request_content
+from lambda_app.lambda_utils import request_content
 
 
 @pytest.fixture
@@ -20,7 +20,7 @@ def mock_500_response():
     return mock_500_response
 
 
-@patch("lambda_function.get_request")
+@patch("lambda_app.lambda_utils.get_request")
 def test_uses_parameters_in_request(mock_get_request, mock_200_response):
     mock_get_request.return_value = mock_200_response
     request_content("test-API-key", "test-search-term", "2023-03-28")
@@ -29,14 +29,14 @@ def test_uses_parameters_in_request(mock_get_request, mock_200_response):
     )
 
 
-@patch("lambda_function.get_request")
+@patch("lambda_app.lambda_utils.get_request")
 def test_returns_dict_for_200_response(mock_get_request, mock_200_response):
     mock_get_request.return_value = mock_200_response
     output = request_content("test-API-key", "test-search-term", "2023-03-28")
     assert isinstance(output, dict)
 
 
-@patch("lambda_function.get_request")
+@patch("lambda_app.lambda_utils.get_request")
 def test_returns_none_for_500_response(mock_get_request, mock_500_response):
     mock_get_request.return_value = mock_500_response
     output = request_content("test-API-key", "test-search-term", "2023-03-28")

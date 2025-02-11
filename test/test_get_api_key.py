@@ -5,7 +5,7 @@ import boto3
 from botocore.exceptions import ClientError
 import pytest
 
-from lambda_function import get_api_key
+from lambda_app.lambda_utils import get_api_key
 
 
 @pytest.fixture(scope="function")

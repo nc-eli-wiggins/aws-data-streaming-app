@@ -5,7 +5,7 @@ import boto3
 from botocore.exceptions import ClientError
 import pytest
 
-from lambda_function import post_to_sqs
+from lambda_app.lambda_utils import post_to_sqs
 from test_data.prepared_messages import prepared_messages
 
 
