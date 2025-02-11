@@ -46,6 +46,9 @@ def lambda_handler(event, context):
         logger.critical(f"Critical error during perpare_messages execution: {repr(e)}")
         raise e
 
+    if prepared_messages == []:
+        return {"statusCode": 200, "body": "0 articles retrieved."}
+    
     # Post messages SQS
     try:
         logger.info("post_to_sqs invoked.")
