@@ -10,13 +10,13 @@ def lambda_handler(event, context):
         logger.info("Accessing search terms from event.")
         if context == "local":
             search_term = event["SearchTerm"]
-            from_date = event["FromDate"]
+            from_date = event.get("FromDate", None)
         else:
             search_term = event["SearchTerm"]
-            from_date = event["FromDate"]
+            from_date = event.get("FromDate", None)
         logger.info("Search terms stored")
     except Exception as e:
-        logger.critical("Critical error while attempting to access search terms.")
+        logger.critical(f"Critical error while attempting to access search terms. Event = {event}")
         raise e
 
     # Get API key from Secrets Manager
