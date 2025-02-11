@@ -1,9 +1,3 @@
-variable "state_bucket" {
-    description = "S3 bucket name for storing Terraform state file"
-    type = string
-    default = "mc-guardian-data-streaming-terraform-state-bucket "
-}
-
 variable "project_owner" {
     description = "Name to be used for project owner in resource tags"
     type = string

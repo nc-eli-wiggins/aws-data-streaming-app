@@ -7,7 +7,7 @@ terraform {
     }
 
     backend "s3" {
-        bucket = var.state_bucket
+        bucket = "mc-guardian-data-streaming-terraform-state-bucket"
         key = "terraform-perm.tfstate"
         region = "eu-west-2"
     }

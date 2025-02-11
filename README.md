@@ -32,6 +32,7 @@
 
 4. **Update the Terraform vars in the [terraform-perm directory](./terraform-perm/vars.tf)**
 
+    - Update the backend bucket in [Terraform providers file](terraform/providers.tf)
 
 5. **Add your AWS access key and secret access key to the repo secrets**
 
