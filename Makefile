@@ -34,7 +34,7 @@ endef
 
 ## Build the environment requirements
 requirements: create-environment
-	$(call execute_in_env, $(PIP) install -r ./dev-requirements.txt)
+	$(call execute_in_env, $(PIP) install -r ./dev_requirements.txt)
 
 
 ### Set up dev tools ###
