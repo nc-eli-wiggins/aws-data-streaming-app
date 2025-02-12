@@ -4,6 +4,11 @@ variable "project_owner" {
     default = "Martin C."
 }
 
+variable "project_name" {
+    type = string
+    default = "Guardian-data-streaming-app"
+}
+
 variable "department" {
     description = "Department name to be used in resource tags"
     type = string
