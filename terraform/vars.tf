@@ -6,7 +6,7 @@ variable "project_owner" {
 
 variable "project_name" {
     type = string
-    default = "Guardian-data-streaming-app"
+    default = "data-streaming-app"
 }
 
 variable "department" {
