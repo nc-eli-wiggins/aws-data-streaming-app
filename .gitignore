@@ -174,3 +174,5 @@ cython_debug/
 # Terraform
 
 .terraform*
+layer
+zip_files

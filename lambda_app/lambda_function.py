@@ -49,7 +49,7 @@ def lambda_handler(event, context):
     if prepared_messages == []:
         return {"statusCode": 200, "body": "0 articles retrieved."}
     
-    # Post messages SQS
+    # Post messages to SQS
     try:
         logger.info("post_to_sqs invoked.")
         sqs_response = post_to_sqs(prepared_messages)
