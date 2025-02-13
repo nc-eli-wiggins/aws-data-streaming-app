@@ -1,14 +1,14 @@
 Name                                  Stmts   Miss  Cover   Missing
 -------------------------------------------------------------------
 lambda_app/__init__.py                    0      0   100%
-lambda_app/lambda_function.py            44     11    75%   12-13, 36-38, 45-47, 54-56
+lambda_app/lambda_function.py            46     12    74%   12-13, 36-38, 45-47, 50, 57-59
 lambda_app/lambda_utils.py               38      0   100%
 test/test_data/prepared_messages.py       2      0   100%
 test/test_get_api_key.py                 34      0   100%
-test/test_lambda_handler.py              58      0   100%
+test/test_lambda_handler.py              56      0   100%
 test/test_post_to_sqs.py                 33      0   100%
-test/test_prepare_messages.py            27      0   100%
+test/test_prepare_messages.py            36      0   100%
 test/test_request_content.py             29      0   100%
 test/test_setup_logger.py                14      0   100%
 -------------------------------------------------------------------
-TOTAL                                   279     11    96%
+TOTAL                                   288     12    96%

@@ -30,9 +30,10 @@
     --create-bucket-configuration LocationConstraint=[YOUR REGION]
     ```
 
-4. **Update the Terraform vars in the [terraform-perm directory](./terraform-perm/vars.tf)**
+4. **Update the Terraform fields**
 
     - Update the backend bucket in [Terraform providers file](terraform/providers.tf)
+    - Update the vars in the [terraform directory](./terraform/vars.tf)
 
 5. **Add your AWS access key and secret access key to the repo secrets**
 
