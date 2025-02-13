@@ -1,4 +1,5 @@
 from json import load, loads
+from string import ascii_letters, digits
 
 import pytest
 
@@ -57,3 +58,32 @@ def test_message_body(raw_response):
 def test_handles_empty_response(raw_response_empty):
     output = prepare_messages(raw_response_empty) 
     assert output == []
+
+
+@pytest.mark.it("Message Ids are unique")
+def test_message_ids_unique(raw_response):
+    '''
+    An id can only contain alphanumeric characters, hyphens and underscores. 
+    It can be at most 80 letters long."
+    '''
+    output = prepare_messages(raw_response)
+    message_ids = [x["Id"] for x in output]
+    assert len(message_ids) == len(set(message_ids))
+
+
+@pytest.mark.it("Message Ids meet AWS stipulations")
+def test_message_ids_stipulations(raw_response):
+    '''
+    An id can only contain alphanumeric characters, hyphens and underscores. 
+    It can be at most 80 letters long."
+    '''
+    valid_chars = ascii_letters + digits + '-_'
+    output = prepare_messages(raw_response)
+    message_ids = [x["Id"] for x in output]
+    for id in message_ids:
+        assert len(id) < 81
+        assert all(char in valid_chars for char in id)
+
+
+
+

@@ -47,9 +47,16 @@ def request_content(
 
 def prepare_messages(raw_response):
     articles = raw_response["response"]["results"]
+
+    def id_generator(articles):
+        for x in range(1, len(articles)+1):
+            yield str(x)
+    
+    id_gen = id_generator(articles)
+    
     prepared_messages = [
         {
-            "Id": x["id"],
+            "Id": next(id_gen),
             "MessageBody": dumps(
                 {
                     "webPublicationDate": x["webPublicationDate"],
