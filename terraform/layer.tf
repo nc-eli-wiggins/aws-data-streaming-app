@@ -9,14 +9,6 @@ resource "null_resource" "create_dependencies" {
 }
 
 
-data "archive_file" "lambda" {
-    type        = "zip"
-    source_dir  = "${path.module}/../lambda_app"
-    output_path = "${path.module}/../zip_files/lambda_app.zip"
-
-}
-
-
 data "archive_file" "layer" {
     type = "zip"
     source_dir =  "${path.module}/../layer" 
@@ -25,3 +17,9 @@ data "archive_file" "layer" {
     depends_on = [ null_resource.create_dependencies ]
 }
 
+
+resource "aws_lambda_layer_version" "dependencies" {
+  layer_name = "requests_boto3_layer"
+  s3_bucket  = aws_s3_object.layer_code.bucket
+  s3_key     = aws_s3_object.layer_code.key
+}

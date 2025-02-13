@@ -6,7 +6,7 @@ resource "aws_s3_bucket" "code_bucket" {
 resource "aws_s3_object" "lambda_code" {
   bucket = aws_s3_bucket.code_bucket.id
   key = "lambda_code_package"
-  source = "${path.module}/../zip_files/lambda.zip"
+  source = "${path.module}/../zip_files/lambda_app.zip"
   source_hash = data.archive_file.lambda.output_base64sha256
 }
 
