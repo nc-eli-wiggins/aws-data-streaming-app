@@ -13,6 +13,8 @@ def setup_logger(logger_name: str):
         "%(asctime)s %(levelname)s %(name)s %(message)s " + "%(filename)s %(funcName)s"
     )
     json_handler.setFormatter(formatter)
+    for handler in logger.handlers:
+        logger.removeHandler(handler)
     logger.addHandler(json_handler)
 
     return logger
