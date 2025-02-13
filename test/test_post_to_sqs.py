@@ -25,7 +25,7 @@ def sqs_client(aws_creds):
     with mock_aws():
         sqs_client = boto3.client("sqs")
         sqs_client.create_queue(
-            QueueName='guardian_content',
+            QueueName='guardian_content.fifo',
             Attributes={
                 'MessageRetentionPeriod': '259200'
             }
@@ -33,7 +33,7 @@ def sqs_client(aws_creds):
 
         global queue_url
         queue_url = sqs_client.get_queue_url(
-            QueueName='guardian_content'
+            QueueName='guardian_content.fifo'
         )['QueueUrl']
         
         yield sqs_client
