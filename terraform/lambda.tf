@@ -18,6 +18,8 @@ resource "aws_lambda_function" "data_streaming_lambda" {
   layers           = [aws_lambda_layer_version.dependencies.arn]
 
   depends_on = [aws_s3_object.lambda_code, aws_s3_object.layer_code]
+
+
 }
 
 ### IAM ###
@@ -112,4 +114,16 @@ resource "aws_iam_policy" "sqs_policy" {
 resource "aws_iam_role_policy_attachment" "lambda_sqs_policy_attachment" {
   role       = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.sqs_policy.arn
+}
+
+
+resource "aws_lambda_invocation" "test" {
+  function_name = aws_lambda_function.data_streaming_lambda.function_name
+  input = jsonencode({
+    SearchTerm = "recursion immersion"
+  })
+}
+
+output "result_entry" {
+  value = jsondecode(aws_lambda_invocation.test.result)
 }
