@@ -20,3 +20,9 @@ variable "retention_date" {
     type = string
     default = "2025-03-31"
 }
+
+variable "secrets_arn" {
+    description = "Retention date to be used in resource tags"
+    type = string
+    default = "arn:aws:secretsmanager:eu-west-2:340752809785:secret:Guardian-API-Key-MzSRM5"
+}
