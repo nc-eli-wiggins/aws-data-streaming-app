@@ -1,11 +1,11 @@
 from unittest.mock import patch, Mock
-# import sys
-# sys.path.append('./lambda_app')
+import sys
+sys.path.append('./lambda_app')
 
 import pytest
 from botocore.exceptions import ClientError
 
-from lambda_app.lambda_function import lambda_handler
+from lambda_function import lambda_handler
 
 
 ### Fixtures ###
@@ -13,31 +13,31 @@ from lambda_app.lambda_function import lambda_handler
 
 @pytest.fixture
 def mock_setup_logger():
-    with patch("lambda_app.lambda_function.setup_logger") as mock_setup_logger:
+    with patch("lambda_function.setup_logger") as mock_setup_logger:
         yield mock_setup_logger
 
 
 @pytest.fixture
 def mock_get_api_key():
-    with patch("lambda_app.lambda_function.get_api_key") as mock_get_api_key:
+    with patch("lambda_function.get_api_key") as mock_get_api_key:
         yield mock_get_api_key
 
 
 @pytest.fixture
 def mock_request_content():
-    with patch("lambda_app.lambda_function.request_content") as mock_request_content:
+    with patch("lambda_function.request_content") as mock_request_content:
         yield mock_request_content
 
 
 @pytest.fixture
 def mock_prepare_messages():
-    with patch("lambda_app.lambda_function.prepare_messages") as mock_prepare_messages:
+    with patch("lambda_function.prepare_messages") as mock_prepare_messages:
         yield mock_prepare_messages
 
 
 @pytest.fixture
 def mock_post_to_sqs():
-    with patch("lambda_app.lambda_function.post_to_sqs") as mock_post_to_sqs:
+    with patch("lambda_function.post_to_sqs") as mock_post_to_sqs:
         yield mock_post_to_sqs
 
 
