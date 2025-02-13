@@ -75,7 +75,7 @@ def post_to_sqs(messages: list):
 
     sqs_client = boto3.client("sqs")
 
-    queue_url = sqs_client.get_queue_url(QueueName="guardian_content.fifo")["QueueUrl"]
+    queue_url = sqs_client.get_queue_url(QueueName="guardian_content")["QueueUrl"]
 
     response = sqs_client.send_message_batch(QueueUrl=queue_url, Entries=messages)
 

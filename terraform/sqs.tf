@@ -2,9 +2,8 @@
 
 
 resource "aws_sqs_queue" "guardian_content_queue" {
-  name                      = "guardian_content.fifo"
+  name                      = "guardian_content"
   message_retention_seconds = 259200
-  fifo_queue            = true
 }
 
 

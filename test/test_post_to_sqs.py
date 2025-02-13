@@ -25,7 +25,7 @@ def sqs_client(aws_creds):
     with mock_aws():
         sqs_client = boto3.client("sqs")
         sqs_client.create_queue(
-            QueueName='guardian_content.fifo',
+            QueueName='guardian_content',
             Attributes={
                 'MessageRetentionPeriod': '259200'
             }
@@ -33,7 +33,7 @@ def sqs_client(aws_creds):
 
         global queue_url
         queue_url = sqs_client.get_queue_url(
-            QueueName='guardian_content.fifo'
+            QueueName='guardian_content'
         )['QueueUrl']
         
         yield sqs_client
@@ -52,3 +52,6 @@ def test_adds_10_messages(sqs_client):
     assert list(output.keys())[0] == 'Successful'
     response = sqs_client.receive_message(QueueUrl=queue_url, MaxNumberOfMessages=10)
     assert len(response['Messages']) == 10
+
+
+"An error occurred (InvalidParameterValue) when calling the SendMessageBatch operation: The request must contain the parameter MessageGroupId."
