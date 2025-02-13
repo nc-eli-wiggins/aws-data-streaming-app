@@ -1,4 +1,4 @@
-from .lambda_utils import (setup_logger, get_api_key, request_content, prepare_messages, post_to_sqs)
+from lambda_utils import (setup_logger, get_api_key, request_content, prepare_messages, post_to_sqs)
 
 
 def lambda_handler(event, context):
