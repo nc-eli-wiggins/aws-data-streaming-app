@@ -99,7 +99,7 @@ resource "aws_iam_role_policy_attachment" "lambda_secrets_policy_attachment" {
 
 data "aws_iam_policy_document" "sqs_document" {
   statement {
-        actions = ["sqs:GetQueueUrl", "sqs:SendMessageBatch"] 
+        actions = ["sqs:GetQueueUrl", "sqs:SendMessage"] 
         resources = [aws_sqs_queue.guardian_content_queue.arn]
     }
 }
