@@ -62,16 +62,12 @@ def test_handles_empty_response(raw_response_empty):
 
 @pytest.mark.it("Message Ids are unique")
 def test_message_ids_unique(raw_response):
-    '''
-    An id can only contain alphanumeric characters, hyphens and underscores. 
-    It can be at most 80 letters long."
-    '''
     output = prepare_messages(raw_response)
     message_ids = [x["Id"] for x in output]
     assert len(message_ids) == len(set(message_ids))
 
 
-@pytest.mark.it("Message Ids meet AWS stipulations")
+@pytest.mark.it("Message Ids meet char stipulations")
 def test_message_ids_stipulations(raw_response):
     '''
     An id can only contain alphanumeric characters, hyphens and underscores. 

@@ -21,6 +21,7 @@ def test_logger_level_is_debug():
    logger = setup_logger("test logger")
    assert logger.level == 10
 
+
 def test_logger_has_one_handler():
    logger = setup_logger("test logger")
    assert len(logger.handlers) == 1
