@@ -22,11 +22,8 @@ def setup_logger(logger_name: str):
 
 def get_api_key() -> str:
     secret_name = "Guardian-API-Key"
-
     client = boto3.client("secretsmanager")
-
     get_secret_value_response = client.get_secret_value(SecretId=secret_name)
-
     return get_secret_value_response["SecretString"]
 
 
