@@ -122,6 +122,8 @@ resource "aws_lambda_invocation" "test" {
   input = jsonencode({
     SearchTerm = "recursion immersion"
   })
+
+  depends_on = [ aws_sqs_queue.guardian_content_queue ]
 }
 
 output "result_entry" {
