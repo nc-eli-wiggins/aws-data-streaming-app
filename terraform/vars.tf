@@ -32,3 +32,9 @@ variable "secrets_arn" {
     type = string
     default = "arn:aws:secretsmanager:eu-west-2:340752809785:secret:Guardian-API-Key-MzSRM5"
 }
+
+variable "lambda_name" {
+    description = "Name to be given to lambda function"
+    type = string
+    default = "data_streaming_lambda"
+}

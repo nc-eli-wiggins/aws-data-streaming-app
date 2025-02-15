@@ -7,7 +7,7 @@ data "archive_file" "lambda" {
 
 
 resource "aws_lambda_function" "data_streaming_lambda" {
-  function_name    = "data_streaming_lambda"
+  function_name    = var.lambda_name
   source_code_hash = data.archive_file.lambda.output_base64sha256
   s3_bucket        = aws_s3_bucket.code_bucket.bucket
   s3_key           = aws_s3_object.lambda_code.key

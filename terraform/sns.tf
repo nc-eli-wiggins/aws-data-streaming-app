@@ -3,7 +3,7 @@ resource "aws_sns_topic" "critical_error_notifications" {
 }
 
 
-resource "aws_sns_topic_subscription" "user_great_quote_updates" {
+resource "aws_sns_topic_subscription" "crit_error_subscription" {
   topic_arn = aws_sns_topic.critical_error_notifications.arn
   protocol = "email"
   endpoint = var.project_owner_email
