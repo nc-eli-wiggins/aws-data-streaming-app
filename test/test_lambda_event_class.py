@@ -54,7 +54,7 @@ def test_queue_not_guardian():
 
 
 @pytest.mark.it("Raises validation error if SearchFrom < 2 chars")
-def test_queue_not_guardian():
+def test_search_from_chars():
     event = {'SearchTerm': "e", "queue": "guardian_content", "FromDate": "2016-09-10"}
     with pytest.raises(ValidationError):
         LambdaEvent(**event)
