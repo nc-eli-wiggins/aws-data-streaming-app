@@ -1,4 +1,5 @@
 import logging
+import re
 from json import dumps
 
 import boto3
@@ -18,6 +19,21 @@ def setup_logger(logger_name: str):
     logger.addHandler(json_handler)
 
     return logger
+
+
+def validate_event(event: dict):
+    error_message = ''
+    if "SearchTerm" not in event:
+        error_message += "Event must contain 'SearchTerm' key. "
+    if "SearchTerm" in event:
+         if not isinstance(event["SearchTerm"], str):
+            error_message += 'SearchTerm must be a string. '
+    if "FromDate" in event:
+            pat = re.compile(r"\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])")
+            if not re.fullmatch(pat, event["FromDate"]): 
+                error_message += "FromDate must match the format yyyy-mm-dd, e.g. 2014-02-16." 
+    if error_message:
+        raise AssertionError(f"{error_message.rstrip()}")
 
 
 def get_api_key() -> str:
