@@ -1,21 +1,16 @@
 from unittest.mock import patch, Mock
 import sys
-sys.path.append('./lambda_app')
+
+sys.path.append("./lambda_app")
 
 import pytest
 from botocore.exceptions import ClientError
+from requests import RequestException
 
 from lambda_function import lambda_handler
 
 
 ### Fixtures ###
-
-
-@pytest.fixture
-def mock_setup_logger():
-    with patch("lambda_function.setup_logger") as mock_setup_logger:
-        yield mock_setup_logger
-
 
 @pytest.fixture
 def mock_get_api_key():
@@ -43,18 +38,26 @@ def mock_post_to_sqs():
 
 @pytest.fixture
 def patch_all(
-    mock_setup_logger,
     mock_get_api_key,
     mock_request_content,
     mock_prepare_messages,
-    mock_post_to_sqs,
+    mock_post_to_sqs
 ):
-    yield "Woah! Sure you're doing enough patching there, Sonny Jim?"
+    yield {
+        "mock_get_api_key": mock_get_api_key,
+        "mock_request_content": mock_request_content,
+        "mock_prepare_messages": mock_prepare_messages,
+        "mock_post_to_sqs": mock_post_to_sqs
+    }
 
 
 @pytest.fixture
 def test_event():
-    return {"SearchTerm": "futuristic egg", "FromDate": "2025-01-01", "queue": "guardian_content"}
+    return {
+        "SearchTerm": "futuristic egg",
+        "FromDate": "2025-01-01",
+        "queue": "guardian_content",
+    }
 
 
 @pytest.fixture
@@ -86,6 +89,11 @@ class TestOutput:
         output = lambda_handler(test_event, "AWS")
         assert "body" in output
 
+    def test_return_0_articles(self, patch_all, test_event):
+        patch_all['mock_prepare_messages'].return_value = []
+        output = lambda_handler(test_event, "AWS")
+        assert output == {"statusCode": 200, "body": "0 articles retrieved"}
+
 
 class TestLoggingAndErrorHandling:
     def test_catches_and_logs_invalid_events(self, caplog):
@@ -93,7 +101,7 @@ class TestLoggingAndErrorHandling:
         output = lambda_handler({}, "AWS")
         assert expected_log in caplog.text
 
-    def test_catches_and_logs_get_api_error(
+    def test_catches_and_logs_get_api_key_error(
         self, mock_get_api_key, test_event, caplog, client_error_message
     ):
         expected_log = "Critical error during get_api_key execution: ClientError"
@@ -102,4 +110,49 @@ class TestLoggingAndErrorHandling:
             operation_name="get_secret_value",
         )
         lambda_handler(test_event, "AWS")
+        assert expected_log in caplog.text
+
+    def test_catches_and_logs_request_content_error(
+        self,
+        mock_get_api_key,
+        test_event,
+        mock_request_content,
+        caplog,
+        client_error_message,
+    ):
+        expected_log = (
+            "Critical error during request_content execution: RequestException"
+        )
+        mock_request_content.side_effect = RequestException("Yelp!")
+        lambda_handler(test_event, "AWS")
+        assert expected_log in caplog.text
+
+    def test_catches_and_logs_prepare_messages_error(
+        self,
+        test_event,
+        patch_all,
+        caplog
+    ):
+        expected_log = (
+            "Critical error during perpare_messages execution: KeyError('Burp!')"
+        )
+        patch_all['mock_prepare_messages'].side_effect = KeyError("Burp!")
+        output = lambda_handler(test_event, "AWS")
+        print(output)
+        assert expected_log in caplog.text
+
+    def test_catches_and_logs_post_to_sqs_error(
+        self,
+        test_event,
+        patch_all,
+        client_error_message,
+        caplog
+    ):
+        expected_log = (
+            "Critical error during post_to_sqs execution: ClientError"
+        )
+        patch_all['mock_post_to_sqs'].side_effect = ClientError(client_error_message,
+            operation_name="send_message_batch",)
+        output = lambda_handler(test_event, "AWS")
+        print(output)
         assert expected_log in caplog.text
