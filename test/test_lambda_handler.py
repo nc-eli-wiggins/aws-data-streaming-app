@@ -54,7 +54,7 @@ def patch_all(
 
 @pytest.fixture
 def test_event():
-    return {"SearchTerm": "futuristic egg", "FromDate": "01-01-2025"}
+    return {"SearchTerm": "futuristic egg", "FromDate": "2025-01-01", "queue": "guardian_content"}
 
 
 @pytest.fixture
@@ -88,12 +88,9 @@ class TestOutput:
 
 
 class TestLoggingAndErrorHandling:
-    def test_catches_and_logs_missing_search_terms(self, caplog):
-        expected_log = (
-            "Critical error while attempting to access search terms. Event = "
-        )
-        with pytest.raises(KeyError):
-            output = lambda_handler({}, "AWS")
+    def test_catches_and_logs_invalid_events(self, caplog):
+        expected_log = "Invalid event. Event = "
+        output = lambda_handler({}, "AWS")
         assert expected_log in caplog.text
 
     def test_catches_and_logs_get_api_error(
@@ -104,6 +101,5 @@ class TestLoggingAndErrorHandling:
             client_error_message,
             operation_name="get_secret_value",
         )
-        with pytest.raises(ClientError):
-            lambda_handler(test_event, "AWS")
+        lambda_handler(test_event, "AWS")
         assert expected_log in caplog.text

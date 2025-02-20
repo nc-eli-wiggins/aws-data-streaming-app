@@ -1,19 +1,25 @@
+from pydantic import ValidationError
+
 from lambda_utils import (setup_logger, get_api_key, request_content, prepare_messages, post_to_sqs)
+from lambda_classes import LambdaEvent
 
 
 def lambda_handler(event, context):
     logger = setup_logger("Guardian Data Streaming Lambda")
     logger.info("Guardian data streaming lambda invoked")
 
-    # Capture search_term and from_date variables
+    # Validate event
     try:
-        logger.info("Accessing search terms from event.")
-        search_term = event["SearchTerm"]
-        from_date = event.get("FromDate", None)
-        logger.info("Search terms stored")
-    except Exception as e:
-        logger.critical(f"Critical error while attempting to access search terms. Event = {event}")
-        raise e
+        logger.info("Validating event")
+        event = LambdaEvent(**event)
+        logger.info("Event validated")
+    except ValidationError as e:
+        logger.error(f"Invalid event. Event = {event}")
+        return {"statusCode": 400, "body": f"{str(e)}"}
+    
+    # Capture values from event
+    search_term = event.SearchTerm
+    from_date = event.FromDate
 
     # Get API key from Secrets Manager
     try:
@@ -22,7 +28,7 @@ def lambda_handler(event, context):
         logger.info("get_api_key executed successfully")
     except Exception as e:
         logger.critical(f"Critical error during get_api_key execution: {repr(e)}")
-        raise e
+        return {"statusCode": 500, "body": "Critical error experienced while processing request."}
     
     # Make get request using search terms and API key
     try:
@@ -31,7 +37,7 @@ def lambda_handler(event, context):
         logger.info(f"request_content executed successfully, search_term = {search_term}")
     except Exception as e:
         logger.critical(f"Critical error during request_content execution: {repr(e)}")
-        raise e
+        return {"statusCode": 500, "body": "Critical error experienced while processing request."}
 
     # Prepare content into messages
     try:
@@ -40,7 +46,7 @@ def lambda_handler(event, context):
         logger.info("prepare_messages executed successfully")
     except Exception as e:
         logger.critical(f"Critical error during perpare_messages execution: {repr(e)}")
-        raise e
+        return {"statusCode": 500, "body": "Critical error experienced while processing request."}
 
     if prepared_messages == []:
         return {"statusCode": 200, "body": "0 articles retrieved"}
@@ -52,6 +58,6 @@ def lambda_handler(event, context):
         logger.info("post_to_sqs executed successfully")
     except Exception as e:
         logger.critical(f"Critical error during post_to_sqs execution: {repr(e)}")
-        raise e
+        return {"statusCode": 500, "body": "Critical error experienced while processing request."}
 
     return {"statusCode": 200, "body": f"{len(prepared_messages)} messages uploaded to SQS"}
