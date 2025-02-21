@@ -28,14 +28,19 @@ def get_api_key() -> str:
     return get_secret_value_response["SecretString"]
 
 
-def request_content(api_key: str, search_term: str, from_date: str) -> dict | None:
+def request_content(api_key: str, search_term: str, from_date: str, to_date: str = "") -> dict | None:
 
     url = f"https://content.guardianapis.com/search?q={search_term}"
 
     if from_date:
         url += f"&from-date={from_date}"
 
-    response = get_request(url + f"&api-key={api_key}")
+    if to_date:
+        url += f"&to-date={to_date}"
+
+    options = "&show-fields=wordcount&show-blocks=body"
+
+    response = get_request(url + options + f"&api-key={api_key}")
 
     if response.status_code == 200:
         return response.json()
@@ -54,9 +59,12 @@ def prepare_messages(raw_response):
             "Id": str(next(id_gen)),
             "MessageBody": dumps(
                 {
-                    "webPublicationDate": x["webPublicationDate"],
-                    "webTitle": x["webTitle"],
-                    "webUrl": x["webUrl"],
+                    "Title": x["webTitle"],
+                    "Section": x["sectionName"],
+                    "PublicationDate": x["webPublicationDate"],
+                    "WordCount": x['fields']["wordcount"],
+                    "Url": x["webUrl"],
+                    "Summary": x["blocks"]["body"][0]["bodyTextSummary"]
                 }
             ),
         }

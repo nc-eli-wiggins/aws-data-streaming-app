@@ -47,7 +47,7 @@ def test_values(raw_response):
 
 @pytest.mark.it("MessageBody JSON has required keys")
 def test_message_body(raw_response):
-    required_keys = ("webPublicationDate", "webTitle", "webUrl")
+    required_keys = ("Title", "Section", "PublicationDate",  "WordCount", "Url", "Summary")
     output = prepare_messages(raw_response) 
     assert all(
         tuple(loads(x['MessageBody']).keys()) == required_keys for x in output
