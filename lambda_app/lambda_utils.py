@@ -53,6 +53,7 @@ def prepare_messages(raw_response):
 
     id_range = range(1, len(articles)+1) 
     id_gen = iter(id_range)
+    shorten = lambda x: x[:1001].rsplit('.', 1)[0] + '.'
     
     prepared_messages = [
         {
@@ -64,7 +65,7 @@ def prepare_messages(raw_response):
                     "PublicationDate": x["webPublicationDate"],
                     "WordCount": x['fields']["wordcount"],
                     "Url": x["webUrl"],
-                    "Summary": x["blocks"]["body"][0]["bodyTextSummary"]
+                    "Preview": shorten(x["blocks"]["body"][0]["bodyTextSummary"])
                 }
             ),
         }
