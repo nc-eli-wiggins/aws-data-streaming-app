@@ -81,15 +81,9 @@ def test_message_ids_stipulations(raw_response):
         assert all(char in valid_chars for char in id)
 
 
-@pytest.mark.it("Previews are > 1001 chars ")
-def test_summary_limit(raw_response):
-    '''
-    An id can only contain alphanumeric characters, hyphens and underscores. 
-    It can be at most 80 letters long."
-    '''
+@pytest.mark.it("Previews are < 1001 chars")
+def test_preview_limit(raw_response):
     output = prepare_messages(raw_response)
     previews = [loads(x["MessageBody"])["Preview"] for x in output]
     for preview in previews:
         assert len(preview) < 1001
-
-
