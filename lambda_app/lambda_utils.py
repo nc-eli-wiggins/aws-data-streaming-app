@@ -7,19 +7,6 @@ from requests import get as get_request
 
 
 def setup_logger(logger_name: str):
-    
-    class JSONFormatter(logging.Formatter):
-        def format(self, record):
-            log_obj = {
-                "asctime": self.formatTime(record, self.datefmt),
-                "levelname": record.levelname,
-                "name": record.name,
-                "message": record.getMessage(),
-                "filename": record.filename,
-                "funcName": record.funcName,
-            }
-            return dumps(log_obj)
-    
     logger = logging.getLogger(logger_name)
     logger.setLevel(logging.DEBUG)
     json_handler = logging.StreamHandler()
@@ -84,6 +71,7 @@ def prepare_messages(raw_response):
         }
         for x in articles
     ]
+
     return prepared_messages
 
 
@@ -92,3 +80,16 @@ def post_to_sqs(messages: list):
     queue_url = sqs_client.get_queue_url(QueueName="guardian_content")["QueueUrl"]
     response = sqs_client.send_message_batch(QueueUrl=queue_url, Entries=messages)
     return response
+
+
+class JSONFormatter(logging.Formatter):
+    def format(self, record):
+        log_obj = {
+            "asctime": self.formatTime(record, self.datefmt),
+            "levelname": record.levelname,
+            "name": record.name,
+            "message": record.getMessage(),
+            "filename": record.filename,
+            "funcName": record.funcName,
+        }
+        return dumps(log_obj)
