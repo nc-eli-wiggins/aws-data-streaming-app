@@ -138,7 +138,6 @@ class TestLoggingAndErrorHandling:
         )
         patch_all['mock_prepare_messages'].side_effect = KeyError("Burp!")
         output = lambda_handler(test_event, "AWS")
-        print(output)
         assert expected_log in caplog.text
 
     def test_catches_and_logs_post_to_sqs_error(
@@ -154,5 +153,4 @@ class TestLoggingAndErrorHandling:
         patch_all['mock_post_to_sqs'].side_effect = ClientError(client_error_message,
             operation_name="send_message_batch",)
         output = lambda_handler(test_event, "AWS")
-        print(output)
         assert expected_log in caplog.text
