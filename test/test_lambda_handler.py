@@ -4,7 +4,7 @@ import sys, os
 sys.path.append("./lambda_app")
 
 # Remove the Lambda layer path from sys.path
-lambda_layer_path = os.path.join(os.getcwd(), 'layers', 'python')
+lambda_layer_path = os.path.join(os.getcwd(), 'layer', 'python')
 if lambda_layer_path in sys.path:
     sys.path.remove(lambda_layer_path)
 
