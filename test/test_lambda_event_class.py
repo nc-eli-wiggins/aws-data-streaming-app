@@ -1,3 +1,10 @@
+import sys, os
+
+# Remove the Lambda layer path from sys.path
+lambda_layer_path = os.path.join(os.getcwd(), 'layers', 'python')
+if lambda_layer_path in sys.path:
+    sys.path.remove(lambda_layer_path)
+
 from pydantic import ValidationError
 
 import pytest
