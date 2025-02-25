@@ -1,6 +1,6 @@
 # aws-data-streaming-app
-[![Tests](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test-and-deploy.yaml/badge.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test-and-deploy.yaml)
-[![Coverage](./docs/coverage.svg)](./docs/coverage.txt)
+[![Tests](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test_and_deploy.yaml/badge.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test_and_deploy.yaml)
+[![Coverage](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/docs/coverage.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/docs/coverage.txt)
 
 ## Prerequisites
 
