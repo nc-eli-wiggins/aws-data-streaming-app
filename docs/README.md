@@ -1,5 +1,6 @@
 # aws-data-streaming-app
-
+[![Tests](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test-and-deploy.yaml/badge.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test-and-deploy.yaml)
+[![Coverage](./docs/coverage.svg)](./docs/coverage.txt)
 
 ## Prerequisites
 
@@ -33,7 +34,7 @@
 4. **Update the Terraform fields**
 
     - Update the backend bucket in [Terraform providers file](terraform/providers.tf)
-    - Update the vars in the [terraform directory](./terraform/vars.tf)
+    - Update the vars in the [Terraform directory](./terraform/vars.tf)
 
 5. **Add your AWS access key and secret access key to the repo secrets**
 
