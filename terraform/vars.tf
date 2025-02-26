@@ -28,7 +28,7 @@ variable "retention_date" {
 }
 
 variable "secrets_arn" {
-    description = "Retention date to be used in resource tags"
+    description = "ARN of the secret containing the API key"
     type = string
     default = "arn:aws:secretsmanager:eu-west-2:340752809785:secret:Guardian-API-Key-MzSRM5"
 }
