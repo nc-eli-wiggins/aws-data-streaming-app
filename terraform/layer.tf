@@ -19,7 +19,7 @@ data "archive_file" "layer" {
 
 
 resource "aws_lambda_layer_version" "dependencies" {
-  layer_name = "requests_boto3_layer"
+  layer_name = "requests_pydantic_layer"
   s3_bucket  = aws_s3_object.layer_code.bucket
   s3_key     = aws_s3_object.layer_code.key
 }
