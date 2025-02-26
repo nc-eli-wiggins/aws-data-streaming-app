@@ -1,5 +1,5 @@
 # aws-data-streaming-app
-[![Tests](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test_and_deploy.yaml/badge.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test_and_deploy.yaml)
+[![tests-and-deployment](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test_and_deploy.yaml/badge.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test_and_deploy.yaml)
 [![Coverage](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/docs/coverage.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/docs/coverage.txt)
 
 ## Prerequisites
@@ -35,9 +35,17 @@
 
     - Update the backend bucket in [Terraform providers file](terraform/providers.tf)
     - Update the vars in the [Terraform directory](./terraform/vars.tf)
+        - You can get the secret ARN via this CLI command: `aws secretsmanager describe-secret --secret-id Guardian-API-Key --query 'ARN' --output text`
 
 5. **Add your AWS access key and secret access key to the repo secrets**
 
 - Go to Settings > Secrets and variables > Actions.
 - Click New repository secret.
 - Use AWS_ACCESS_KEY and AWS_SECRET__ACCESS_KEY as the secrets names, adding your own values for the secrets themselves.
+
+6. **Run Terraform init, plan and apply**
+
+- `cd terraform`
+- `terraform init`
+- `terraform plan`
+- `terraform apply`
