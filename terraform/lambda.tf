@@ -83,7 +83,7 @@ resource "aws_iam_role_policy_attachment" "lambda_cw_policy_attachment" {
 data "aws_iam_policy_document" "secrets_manager_document" {
   statement {
         actions = ["secretsmanager:GetSecretValue"] 
-        resources = [var.secrets_arn]
+        resources = [var.secret_arn]
     }
 }
 

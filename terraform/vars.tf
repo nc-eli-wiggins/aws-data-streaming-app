@@ -27,7 +27,7 @@ variable "retention_date" {
     default = "2025-03-31"
 }
 
-variable "secrets_arn" {
+variable "secret_arn" {
     description = "ARN of the secret containing the API key"
     type = string
     default = "arn:aws:secretsmanager:eu-west-2:340752809785:secret:Guardian-API-Key-MzSRM5"
