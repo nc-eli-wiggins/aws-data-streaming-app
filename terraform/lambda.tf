@@ -117,6 +117,8 @@ resource "aws_iam_role_policy_attachment" "lambda_sqs_policy_attachment" {
 }
 
 
+### Test invocation
+
 resource "aws_lambda_invocation" "test" {
   function_name = aws_lambda_function.data_streaming_lambda.function_name
   input = jsonencode({
