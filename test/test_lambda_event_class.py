@@ -12,7 +12,7 @@ import pytest
 from lambda_app.lambda_classes import LambdaEvent
 
 
-@pytest.mark.it("Validates when event contains valid SearchTerm and queue and no FromDate")
+@pytest.mark.it("Validates when event contains valid SearchTerm and queue and no From or To Date")
 def test_valid_request():
     event = {'SearchTerm': "blob", "queue": "guardian_content"}
     LambdaEvent(**event)
@@ -47,8 +47,15 @@ def test_raises_err_search():
 
 
 @pytest.mark.it("Raises validation error when from date doesn't match yyyy-mm-dd format")
-def test_raises_err_date():
+def test_raises_err_from_date():
     event = {'SearchTerm': "egg", "queue": "guardian_content", "FromDate": "20-02-1608"}
+    with pytest.raises(ValidationError):
+        LambdaEvent(**event)
+
+
+@pytest.mark.it("Raises validation error when to date doesn't match yyyy-mm-dd format")
+def test_raises_err_to_date():
+    event = {'SearchTerm': "egg", "queue": "guardian_content", "ToDate": "20-02-3308"}
     with pytest.raises(ValidationError):
         LambdaEvent(**event)
 
