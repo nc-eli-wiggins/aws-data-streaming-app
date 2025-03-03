@@ -2,6 +2,8 @@
 [![tests-and-deployment](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test_and_deploy.yaml/badge.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test_and_deploy.yaml)
 [![Coverage](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/docs/coverage.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/docs/coverage.txt)
 
+
+
 ## Prerequisites
 
 - An AWS IAM user with CLI access keys
@@ -20,7 +22,10 @@
 
 2. **Add your Guardian API key to your AWS Secrets Manager**
     ```bash
-    aws secretsmanager create-secret --name Guardian-API-Key --description "Access key for Guardian API." --secret-string "[ADD YOUR API KEY HERE]"
+    aws secretsmanager create-secret \
+    --name Guardian-API-Key \
+    --description "Access key for Guardian API." \
+    --secret-string "[ADD YOUR API KEY HERE]"
     ```
 
 3. **Create your Terraform State Bucket**
