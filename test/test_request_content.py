@@ -23,8 +23,8 @@ def mock_500_response():
 @patch("lambda_app.lambda_utils.get_request")
 def test_uses_parameters_in_request(mock_get_request, mock_200_response):
     mock_get_request.return_value = mock_200_response
-    request_content("test-API-key", "test-search-term", "2023-03-28")
-    exp_call = "https://content.guardianapis.com/search?q=test-search-term&from-date=2023-03-28&show-fields=wordcount&show-blocks=body&api-key=test-API-key"
+    request_content("test-API-key", "test-search-term", "2023-03-28", "2024-08-23")
+    exp_call = "https://content.guardianapis.com/search?q=test-search-term&from-date=2023-03-28&to-date=2024-08-23&show-fields=wordcount&show-blocks=body&api-key=test-API-key"
     mock_get_request.assert_called_with(exp_call)
 
 
