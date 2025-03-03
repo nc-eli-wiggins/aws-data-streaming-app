@@ -3,6 +3,27 @@
 [![Coverage](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/docs/coverage.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/docs/coverage.txt)
 
 
+## Technologies
+
+- Python 3.12.3
+    - requests
+    - boto3
+    - pydantic
+    - bandit
+    - pytest
+    - coverage
+- AWS
+    - Lambda
+    - SQS
+    - Secrets Manager
+    - CloudWatch
+    - S3
+    - SNS
+- DevOps
+    - GitHub Actions
+    - Terraform
+- APIs
+    - [Guardian API](https://open-platform.theguardian.com/documentation/)
 
 ## Prerequisites
 
@@ -57,3 +78,27 @@
 - `terraform init`
 - `terraform plan`
 - `terraform apply`
+
+## Usage
+
+The app can be used via AWS CLI. The payload has two required keys – "SearchTerm" and "queue" – and two optional keys – "FromDate" and "ToDate". The values must conform to the [LambdaEvent model](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/lambda_app/lambda_classes.py).
+
+Example payload:
+
+                {
+                "SearchTerm": "scary futuristic blobs",
+                "FromDate": "2015-12-17",
+                "ToDate": "2024-01-01",
+                "queue": "guardian"
+                }
+
+AWS CLI command:
+
+```bash
+aws lambda invoke \
+    --cli-binary-format raw-in-base64-out \
+    --function-name data_streaming_lambda \
+    --cli-binary-format raw-in-base64-out \
+    --payload '{ "SearchTerm": "[Add Your Search Term]", "queue": "guardian_content" }' \
+    lambda-response.json
+```
