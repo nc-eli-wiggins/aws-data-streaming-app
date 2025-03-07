@@ -2,7 +2,7 @@
 [![tests-and-deployment](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test_and_deploy.yaml/badge.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/actions/workflows/test_and_deploy.yaml)
 [![Coverage](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/docs/coverage.svg)](https://github.com/FloatingBrioche/aws-data-streaming-app/blob/main/docs/coverage.txt)
 
-This application has been designed to allow the Northcoders marketing team search for and ingest articles from the Guardian API. The application uses the Python requests library to submit a get request to the API's "search" endpoint using the passed query. Any resulting articles are then uploaded to an AWS SQS queue to be analysed for relevance and suitability downstream.
+This application has been designed to allow the Northcoders marketing team to search for and ingest articles from the Guardian API. The application uses the Python requests library to submit a get request to the API's "search" endpoint using the passed query. Any resulting articles are then uploaded to an AWS SQS queue to be analysed for relevance and suitability downstream.
 
 The app uses employs a "fail-fast" approach using Pydantic validation to prevent unnecessary API requests and Lambda execution time for invalid queries. Thorough logging, monitoring and alarms are provdided via CloudWatch to ensure proper functioning of the application and adherence to rate limits. CI/CD is provided via a GitHub Actions pipeline and Terraform IaC.
 
