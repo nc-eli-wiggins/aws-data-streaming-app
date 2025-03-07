@@ -68,7 +68,8 @@ The application could be expanded to make requests to and aggregate responses fr
     - Update the vars in the [Terraform directory](./terraform/vars.tf)
         - You can get the secret ARN via this CLI command: 
             ```bash 
-            aws secretsmanager describe-secret --secret-id Guardian-API-Key --query 'ARN' --output text
+            aws secretsmanager describe-secret \
+            --secret-id Guardian-API-Key --query 'ARN' --output text
             ```
 
 5. **Add your AWS access key and secret access key to the repo secrets**
