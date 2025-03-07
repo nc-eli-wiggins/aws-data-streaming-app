@@ -31,12 +31,12 @@ def test_uses_parameters_in_request(mock_get_request, mock_200_response):
 @patch("lambda_app.lambda_utils.get_request")
 def test_returns_dict_for_200_response(mock_get_request, mock_200_response):
     mock_get_request.return_value = mock_200_response
-    output = request_content("test-API-key", "test-search-term", "2023-03-28")
+    output = request_content("test-API-key", "test-search-term", "2023-03-28", "2024-08-23")
     assert isinstance(output, dict)
 
 
 @patch("lambda_app.lambda_utils.get_request")
 def test_returns_none_for_500_response(mock_get_request, mock_500_response):
     mock_get_request.return_value = mock_500_response
-    output = request_content("test-API-key", "test-search-term", "2023-03-28")
+    output = request_content("test-API-key", "test-search-term", "2023-03-28", "2024-08-23")
     assert output is None
