@@ -45,7 +45,7 @@ def get_api_key() -> str:
 
 
 def request_content(
-    api_key: str, search_term: str, from_date: str, to_date: str = ""
+    api_key: str, search_term: str, from_date: str, to_date: str
 ) -> dict | None:
     """Makes get request to Guardian API using params
 
@@ -137,11 +137,11 @@ def prepare_messages(raw_response):
     return prepared_messages
 
 
-def post_to_sqs(messages: list):
+def post_to_sqs(queue:str, messages: list):
     """Posts messages to AWS SQS using boto3
     """
     sqs_client = boto3.client("sqs")
-    queue_url = sqs_client.get_queue_url(QueueName="guardian_content")["QueueUrl"]
+    queue_url = sqs_client.get_queue_url(QueueName=queue)["QueueUrl"]
     response = sqs_client.send_message_batch(QueueUrl=queue_url, Entries=messages)
     return response
 

@@ -10,6 +10,9 @@ from lambda_utils import (
 from lambda_classes import LambdaEvent
 
 
+logger = setup_logger("Guardian Data Streaming Lambda")
+
+
 def lambda_handler(event: dict, context: dict) -> dict:
     """Lambda handler: makes api request, wrangles reponse and uploads to SQS.
 
@@ -41,7 +44,6 @@ def lambda_handler(event: dict, context: dict) -> dict:
 
     """
 
-    logger = setup_logger("Guardian Data Streaming Lambda")
     logger.info("Guardian data streaming lambda invoked")
 
     # Validate event
@@ -54,8 +56,8 @@ def lambda_handler(event: dict, context: dict) -> dict:
         return {"statusCode": 400, "body": f"{str(e)}"}
 
     # Capture values from event
-    search_term = event.SearchTerm
-    from_date = event.FromDate
+    queue, search_term  = event.queue, event.SearchTerm
+    from_date, to_date  = event.FromDate, event.ToDate 
 
     # Get API key from Secrets Manager
     try:
@@ -72,7 +74,7 @@ def lambda_handler(event: dict, context: dict) -> dict:
     # Make get request using search terms and API key
     try:
         logger.info(f"request_content invoked, search_term = {search_term}")
-        raw_response = request_content(api_key, search_term, from_date)
+        raw_response = request_content(api_key, search_term, from_date, to_date)
         logger.info(
             f"request_content executed successfully, search_term = {search_term}"
         )
@@ -89,7 +91,7 @@ def lambda_handler(event: dict, context: dict) -> dict:
         prepared_messages = prepare_messages(raw_response)
         logger.info("prepare_messages executed successfully")
     except Exception as e:
-        logger.critical(f"Critical error during perpare_messages execution: {repr(e)}")
+        logger.critical(f"Critical error during prepare_messages execution: {repr(e)}")
         return {
             "statusCode": 500,
             "body": "Critical error experienced while processing request",
@@ -101,7 +103,7 @@ def lambda_handler(event: dict, context: dict) -> dict:
     # Post messages to SQS
     try:
         logger.info("post_to_sqs invoked")
-        post_to_sqs(prepared_messages)
+        post_to_sqs(queue, prepared_messages)
         logger.info("post_to_sqs executed successfully")
     except Exception as e:
         logger.critical(f"Critical error during post_to_sqs execution: {repr(e)}")

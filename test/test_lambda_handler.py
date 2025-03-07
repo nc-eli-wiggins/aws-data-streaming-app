@@ -140,7 +140,7 @@ class TestLoggingAndErrorHandling:
         caplog
     ):
         expected_log = (
-            "Critical error during perpare_messages execution: KeyError('Burp!')"
+            "Critical error during prepare_messages execution: KeyError('Burp!')"
         )
         patch_all['mock_prepare_messages'].side_effect = KeyError("Burp!")
         output = lambda_handler(test_event, "AWS")

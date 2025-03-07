@@ -41,14 +41,14 @@ def sqs_client(aws_creds):
 
 def test_adds_single_message(sqs_client):
     single_message = [prepared_messages[0]]
-    output = post_to_sqs(single_message)
+    output = post_to_sqs('guardian_content', single_message)
     assert list(output.keys())[0] == 'Successful'
     response = sqs_client.receive_message(QueueUrl=queue_url, MaxNumberOfMessages=10)
     assert len(response['Messages']) == 1
 
 
 def test_adds_10_messages(sqs_client):
-    output = post_to_sqs(prepared_messages)
+    output = post_to_sqs('guardian_content', prepared_messages)
     assert list(output.keys())[0] == 'Successful'
     response = sqs_client.receive_message(QueueUrl=queue_url, MaxNumberOfMessages=10)
     assert len(response['Messages']) == 10
