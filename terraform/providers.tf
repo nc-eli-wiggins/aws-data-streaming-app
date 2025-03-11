@@ -7,7 +7,7 @@ terraform {
     }
 
     backend "s3" {
-        bucket = "mc-guardian-data-streaming-terraform-state-bucket"
+        bucket = "gdpr-obfuscator-state-26-02-25-eli"
         key = "terraform-perm.tfstate"
         region = "eu-west-2"
     }
