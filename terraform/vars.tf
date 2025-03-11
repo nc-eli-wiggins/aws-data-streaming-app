@@ -32,3 +32,9 @@ variable "lambda_name" {
     type = string
     default = "data_streaming_lambda"
 }
+
+variable "secret_arn" {
+  description = "ARN of the secret containing the API key"
+  type        = string
+  sensitive   = true
+}
